@@ -14,17 +14,14 @@
 
 package conn
 
-/*
-#include <sys/time.h>
-
-int sizeof_int = sizeof(int);
-int sizeof_struct_timeval = sizeof(struct timeval);
-*/
-import "C"
+import "unsafe"
 
 const (
-	SizeOfInt      = C.sizeof_int
-	SizeOfTimespec = C.sizeof_struct_timespec
+	SizeOfInt      = int(unsafe.Sizeof(int(0)))     // C.sizeof_int
+	SizeOfTimespec = int(unsafe.Sizeof(Timespec{})) // C.sizeof_struct_timespec
 )
 
-type Timespec C.struct_timespec
+type Timespec struct { // C.struct_timespec
+	tv_sec  uint64
+	tv_nsec uint64
+}
